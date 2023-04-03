@@ -4,14 +4,14 @@ import numpy as np
 from scipy.stats import norm
 
 
-chat_id = 123456 # Ваш chat ID, не меняйте название переменной
+chat_id = 752592494
 
 def solution(p: float, x: np.array) -> tuple:
-    # Измените код этой функции
-    # Это будет вашим решением
-    # Не меняйте название функции и её аргументы
+    from scipy.stats import t
+
     alpha = 1 - p
-    loc = x.mean()
+    loc = np.mean(x)
     scale = np.sqrt(np.var(x)) / np.sqrt(len(x))
-    return loc - scale * norm.ppf(1 - alpha / 2), \
-           loc - scale * norm.ppf(alpha / 2)
+    t_value = t.ppf(1 - alpha / 2, df=len(x) - 1)
+    interval = (loc - t_value * scale, loc + t_value * scale)
+    return interval
