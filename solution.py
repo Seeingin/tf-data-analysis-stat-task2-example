@@ -14,7 +14,6 @@ def solution(p: float, x: np.array) -> tuple:
     mean_acceleration = accelerations.mean()
     standard_error = np.std(accelerations, ddof=1) / np.sqrt(len(accelerations))
     alpha = 1 - p
-    
     t_score = t.ppf(1 - alpha / 2, df=len(accelerations) - 1)
     confidence_interval = (mean_acceleration - t_score * standard_error,
                            mean_acceleration + t_score * standard_error)
