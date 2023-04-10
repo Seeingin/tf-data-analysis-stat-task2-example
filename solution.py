@@ -6,15 +6,18 @@ from scipy.stats import norm
 
 chat_id = 752592494
 
+#Асимптотический доверительный интервал
 def solution(p: float, x: np.array) -> tuple:
-    from scipy.stats import t
-    
-    time = 56
-    accelerations = (2 * x) / (time**2)
-    mean_acceleration = accelerations.mean()
-    standard_error = np.std(accelerations, ddof=1) / np.sqrt(len(accelerations))
     alpha = 1 - p
-    t_score = t.ppf(1 - alpha / 2, df=len(accelerations) - 1)
-    confidence_interval = (mean_acceleration - t_score * standard_error,
-                           mean_acceleration + t_score * standard_error)
-    return confidence_interval
+    loc = (x.mean() + 0.5) / 1568.0
+    scale = np.sqrt(np.var(x)) / (1568.0 * np.sqrt(len(x)))
+    return loc - scale * norm.ppf(1 - alpha / 2), \
+           loc - scale * norm.ppf(alpha / 2)
+
+#Точный доверительный интервал
+def solution(p, x):
+    alpha = 1 - p
+    loc = (x.mean() - 0.5) / 1568.0
+    scale = 1 / (1568.0 * len(x))
+    return gamma.ppf(alpha / 2, len(x), loc=loc, scale=scale), \
+           gamma.ppf(1 - alpha / 2, len(x), loc=loc, scale=scale)
